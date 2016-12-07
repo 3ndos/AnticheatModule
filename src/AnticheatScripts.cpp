@@ -1,6 +1,7 @@
 #include "Configuration/Config.h"
 #include "AnticheatMgr.h"
 #include "Object.h"
+#include "AccountMgr.h"
 
 int64 resetTime = 0;
 int64 lastIterationPlayer = sWorld->GetUptime() + 30;//TODO: change 30 secs static to a configurable option
@@ -80,10 +81,11 @@ class AnticheatMovementHandlerScript : public MovementHandlerScript
 		: MovementHandlerScript("AnticheatMovementHandlerScript")
 	{
 	}
-	void AnticheatMovementHandlerScript::OnPlayerMove(Player* player, MovementInfo mi, uint32 opcode) override
-	{
-		sAnticheatMgr->StartHackDetection(player, mi, opcode);
-	}
+    void AnticheatMovementHandlerScript::OnPlayerMove(Player* player, MovementInfo mi, uint32 opcode) override
+    {
+		if (!AccountMgr::IsGMAccount(player->GetSession()->GetSecurity()) || sConfigMgr->GetBoolDefault("Anticheat.EnabledOnGmAccounts", false))
+			sAnticheatMgr->StartHackDetection(player, mi, opcode);
+    }
 };
 void startAnticheatScripts()
 {

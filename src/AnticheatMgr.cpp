@@ -16,7 +16,7 @@
 #include "AnticheatMgr.h"
 #include "MapManager.h"
 #include "Player.h"
-#include "Configuration\Config.h"
+#include "Configuration/Config.h"
 #define CLIMB_ANGLE 1.9f
 
 AnticheatMgr::AnticheatMgr()
@@ -38,7 +38,7 @@ void AnticheatMgr::JumpHackDetection(Player* player, MovementInfo /* movementInf
 	if (m_Players[key].GetLastOpcode() == MSG_MOVE_JUMP && opcode == MSG_MOVE_JUMP)
 	{
 		BuildReport(player, JUMP_HACK_REPORT);
-		sLog->outString("AnticheatMgr:: Jump-Hack detected player %s (%u)", player->GetName(), player->GetGUIDLow());
+		sLog->outString("AnticheatMgr:: Jump-Hack detected player %s (%u)", player->GetName().c_str() player->GetGUIDLow());
 	}
 }
 
@@ -67,10 +67,10 @@ void AnticheatMgr::WalkOnWaterHackDetection(Player* player, MovementInfo  moveme
 		player->RemoveAura(SPELL_AURA_WATER_WALK);*/
 		//cba to double check this, just adding a kick option
 		player->GetSession()->KickPlayer(true);
-		sLog->outString("AnticheatMgr:: Walk on Water - Hack detected and counteracted by kicking player %s (%u)", player->GetName(), player->GetGUIDLow());
+		sLog->outString("AnticheatMgr:: Walk on Water - Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str() player->GetGUIDLow());
 	}
 	else {
-		sLog->outString("AnticheatMgr:: Walk on Water - Hack detected player %s (%u)", player->GetName(), player->GetGUIDLow());
+		sLog->outString("AnticheatMgr:: Walk on Water - Hack detected player %s (%u)", player->GetName().c_str() player->GetGUIDLow());
 	}
 	BuildReport(player, WALK_WATER_HACK_REPORT);
 
@@ -92,10 +92,10 @@ void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo  movementInfo)
 		return;
 	if (sConfigMgr->GetBoolDefault("Anticheat.KickPlayerFlyHack", false))
 	{
-		sLog->outString("AnticheatMgr:: Fly-Hack detected and counteracted by kicking player %s (%u)", player->GetName(), player->GetGUIDLow());
+		sLog->outString("AnticheatMgr:: Fly-Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str() player->GetGUIDLow());
 		player->GetSession()->KickPlayer(true);
 	}else
-		sLog->outString( "AnticheatMgr:: Fly-Hack detected player %s (%u)", player->GetName(), player->GetGUIDLow());
+		sLog->outString( "AnticheatMgr:: Fly-Hack detected player %s (%u)", player->GetName().c_str() player->GetGUIDLow());
     BuildReport(player,FLY_HACK_REPORT);
 }
 
@@ -124,7 +124,7 @@ void AnticheatMgr::TeleportPlaneHackDetection(Player* player, MovementInfo movem
 	// we are not really walking there
 	if (z_diff > 1.0f)
 	{
-		sLog->outString("AnticheatMgr:: Teleport To Plane - Hack detected player %s (%u)", player->GetName(), player->GetGUIDLow());
+		sLog->outString("AnticheatMgr:: Teleport To Plane - Hack detected player %s (%u)", player->GetName().c_str() player->GetGUIDLow());
 		BuildReport(player, TELEPORT_PLANE_HACK_REPORT);
 	}
 }
@@ -185,7 +185,7 @@ void AnticheatMgr::ClimbHackDetection(Player *player, MovementInfo movementInfo,
 
 	if (angle > CLIMB_ANGLE)
 	{
-		sLog->outString("AnticheatMgr:: Climb-Hack detected player %s (%u)", player->GetName(), player->GetGUIDLow());
+		sLog->outString("AnticheatMgr:: Climb-Hack detected player %s (%u)", player->GetName().c_str() player->GetGUIDLow());
 		BuildReport(player, CLIMB_HACK_REPORT);
 	}
 }
@@ -233,7 +233,7 @@ void AnticheatMgr::SpeedHackDetection(Player* player, MovementInfo movementInfo)
 	if (clientSpeedRate > speedRate)
 	{
 		BuildReport(player, SPEED_HACK_REPORT);
-		sLog->outString("AnticheatMgr:: Speed-Hack detected player %s (%u)", player->GetName(), player->GetGUIDLow());
+		sLog->outString("AnticheatMgr:: Speed-Hack detected player %s (%u)", player->GetName().c_str() player->GetGUIDLow());
 	}
 }
 

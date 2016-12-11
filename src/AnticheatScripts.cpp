@@ -56,8 +56,9 @@ public:
 		if (!reload) {
 			std::string conf_path = _CONF_DIR;
 			std::string cfg_file = conf_path + "/Anticheat.conf";
-			if (WIN32)
+			#ifdef WIN32
 				cfg_file = "Anticheat.conf";
+			#endif // WIN32
 			std::string cfg_def_file = cfg_file + ".dist";
 			sConfigMgr->LoadMore(cfg_def_file.c_str());
 
@@ -81,7 +82,7 @@ class AnticheatMovementHandlerScript : public MovementHandlerScript
 		: MovementHandlerScript("AnticheatMovementHandlerScript")
 	{
 	}
-    void AnticheatMovementHandlerScript::OnPlayerMove(Player* player, MovementInfo mi, uint32 opcode) override
+    void OnPlayerMove(Player* player, MovementInfo mi, uint32 opcode) override
     {
 		if (!AccountMgr::IsGMAccount(player->GetSession()->GetSecurity()) || sConfigMgr->GetBoolDefault("Anticheat.EnabledOnGmAccounts", false))
 			sAnticheatMgr->StartHackDetection(player, mi, opcode);

@@ -28,19 +28,16 @@ public:
     {
         static std::vector<ChatCommand> anticheatCommandTable =
         {
-            { "global",         SEC_GAMEMASTER,     true,  &HandleAntiCheatGlobalCommand,         "" },
-            { "player",         SEC_GAMEMASTER,     true,  &HandleAntiCheatPlayerCommand,         "" },
-            { "delete",         SEC_ADMINISTRATOR,  true,  &HandleAntiCheatDeleteCommand,         "" },
-            { "handle",         SEC_ADMINISTRATOR,  true,  &HandleAntiCheatHandleCommand,         "" },
-            { "jail",           SEC_GAMEMASTER,     true,  &HandleAnticheatJailCommand,         "" },
-            { "warn",           SEC_GAMEMASTER,     true,  &HandleAnticheatWarnCommand,         "" },
-//            { NULL,             0,                     false, NULL,                                           "", NULL }
+            { "global",         SEC_GAMEMASTER,     true,   &HandleAntiCheatGlobalCommand,  "" },
+            { "player",         SEC_GAMEMASTER,     true,   &HandleAntiCheatPlayerCommand,  "" },
+            { "delete",         SEC_ADMINISTRATOR,  true,   &HandleAntiCheatDeleteCommand,  "" },
+            { "jail",           SEC_GAMEMASTER,     false,  &HandleAnticheatJailCommand,    "" },
+            { "warn",           SEC_GAMEMASTER,     true,   &HandleAnticheatWarnCommand,    "" }
         };
 
         static std::vector<ChatCommand> commandTable =
         {
-            { "anticheat",      SEC_GAMEMASTER,     true, NULL,                     "",  anticheatCommandTable},
-//            { NULL,             0,                  false, NULL,                               "", NULL }
+            { "anticheat",      SEC_GAMEMASTER,     true,   NULL, "",  anticheatCommandTable},
         };
 
         return commandTable;
@@ -212,34 +209,6 @@ public:
         handler->PSendSysMessage("Walk On Water Reports: %u  || Teleport To Plane Reports: %u",waterwalk_reports,teleportplane_reports);
         handler->PSendSysMessage("Climb Reports: %u", climb_reports);
 
-        return true;
-    }
-
-    static bool HandleAntiCheatHandleCommand(ChatHandler* handler, const char* args)
-    {
-       /* std::string strCommand;
-
-        char* command = strtok((char*)args, " ");
-
-        if (!command)
-            return true;
-
-        if (!handler->GetSession()->GetPlayer())
-            return true;
-
-        strCommand = command;
-
-        if (strCommand.compare("on") == 0)
-        {
-            sWorld->setBoolConfig(CONFIG_ANTICHEAT_ENABLE,true);
-            handler->SendSysMessage("The Anticheat System is now: Enabled!");
-        }
-        else if (strCommand.compare("off") == 0)
-        {
-            sWorld->setBoolConfig(CONFIG_ANTICHEAT_ENABLE,false);
-            handler->SendSysMessage("The Anticheat System is now: Disabled!");
-        }*/
-		handler->PSendSysMessage("Please change value in config file and reload to disable/enable anticheat system.");
         return true;
     }
 

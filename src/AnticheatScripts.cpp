@@ -43,8 +43,9 @@ public:
 		}
 		if (sWorld->GetUptime() > lastIterationPlayer)
 		{
-			lastIterationPlayer = sWorld->GetUptime() + 30;//TODO: change 30 secs static to a configurable option
+			lastIterationPlayer = sWorld->GetUptime() + sConfigMgr->GetIntDefault("Anticheat.SaveReportsTime", 60);
 			sLog->outString( "Saving reports for %u players.", sWorld->GetPlayerCount());
+			
 			for (SessionMap::const_iterator itr = sWorld->GetAllSessions().begin(); itr != sWorld->GetAllSessions().end(); ++itr)
 				if (Player* plr = itr->second->GetPlayer())
 					sAnticheatMgr->SavePlayerData(plr);

@@ -37,6 +37,13 @@ Anticheat.MaxReportsForDailyReport = 70
 
 Anticheat.LoginMessage = 0
 
+#     Anticheat.WriteLog
+#       Description: Enable writing to log when a player is detected using hacks
+#       Default:    0 - (Disabled)
+#                   1 - (Enabled)
+
+Anticheat.WriteLog = 0
+
 #     Anticheat.Detect
 #       Description: It represents which detections are enabled (ClimbHack disabled by default).
 #       Default:    1 - (Enabled)

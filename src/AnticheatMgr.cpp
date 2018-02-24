@@ -62,14 +62,12 @@ void AnticheatMgr::WalkOnWaterHackDetection(Player* player, MovementInfo  moveme
 		return;
 	if (sConfigMgr->GetBoolDefault("Anticheat.KickPlayerWaterWalkHack", false))
 	{
-		/* cheap hack for now, look at "applyfortargets" later*/
-		/*player->AddAura(SPELL_AURA_WATER_WALK, player);
-		player->RemoveAura(SPELL_AURA_WATER_WALK);*/
-		//cba to double check this, just adding a kick option
+		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
+			sLog->outString("AnticheatMgr:: Walk on Water - Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+
 		player->GetSession()->KickPlayer(true);
-		sLog->outString("AnticheatMgr:: Walk on Water - Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
 	}
-	else {
+	else if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false)) {
 		sLog->outString("AnticheatMgr:: Walk on Water - Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
 	}
 	BuildReport(player, WALK_WATER_HACK_REPORT);
@@ -84,18 +82,25 @@ void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo  movementInfo)
     uint32 key = player->GetGUIDLow();
     if (player->HasAuraType(SPELL_AURA_FLY) || player->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) || player->HasAuraType(SPELL_AURA_MOD_INCREASE_FLIGHT_SPEED))//overkill but wth
         return;
+	
 	/*Thanks to @LilleCarl for info to check extra flag*/
 	bool stricterChecks = true;
 	if (sConfigMgr->GetBoolDefault("Anticheat.StricterFlyHackCheck", false))
 		stricterChecks = !(movementInfo.HasMovementFlag(MOVEMENTFLAG_ASCENDING) && !player->IsInWater());
+	
 	if (!movementInfo.HasMovementFlag(MOVEMENTFLAG_CAN_FLY) && !movementInfo.HasMovementFlag(MOVEMENTFLAG_FLYING) && stricterChecks)
 		return;
+	
 	if (sConfigMgr->GetBoolDefault("Anticheat.KickPlayerFlyHack", false))
 	{
-		sLog->outString("AnticheatMgr:: Fly-Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
+			sLog->outString("AnticheatMgr:: Fly-Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+
 		player->GetSession()->KickPlayer(true);
-	}else
+	} else if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false)) {
 		sLog->outString( "AnticheatMgr:: Fly-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+	}
+
     BuildReport(player,FLY_HACK_REPORT);
 }
 
@@ -124,7 +129,9 @@ void AnticheatMgr::TeleportPlaneHackDetection(Player* player, MovementInfo movem
 	// we are not really walking there
 	if (z_diff > 1.0f)
 	{
-		sLog->outString("AnticheatMgr:: Teleport To Plane - Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
+			sLog->outString("AnticheatMgr:: Teleport To Plane - Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+		
 		BuildReport(player, TELEPORT_PLANE_HACK_REPORT);
 	}
 }
@@ -185,7 +192,9 @@ void AnticheatMgr::ClimbHackDetection(Player *player, MovementInfo movementInfo,
 
 	if (angle > CLIMB_ANGLE)
 	{
-		sLog->outString("AnticheatMgr:: Climb-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
+			sLog->outString("AnticheatMgr:: Climb-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+		
 		BuildReport(player, CLIMB_HACK_REPORT);
 	}
 }
@@ -232,8 +241,10 @@ void AnticheatMgr::SpeedHackDetection(Player* player, MovementInfo movementInfo)
 	// we did the (uint32) cast to accept a margin of tolerance
 	if (clientSpeedRate > speedRate)
 	{
+		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
+			sLog->outString("AnticheatMgr:: Speed-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+
 		BuildReport(player, SPEED_HACK_REPORT);
-		sLog->outString("AnticheatMgr:: Speed-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
 	}
 }
 

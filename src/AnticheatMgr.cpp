@@ -66,6 +66,17 @@ void AnticheatMgr::WalkOnWaterHackDetection(Player* player, MovementInfo  moveme
 			sLog->outString("AnticheatMgr:: Walk on Water - Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
 
 		player->GetSession()->KickPlayer(true);
+		if(sConfigMgr->GetBoolDefault("Anticheat.AnnounceKick", true))
+		{
+			std::string plr = player->GetName();
+			std::string tag_colour = "7bbef7";
+			std::string plr_colour = "ff0000";
+			std::ostringstream stream;
+			stream << "|CFF" << plr_colour << "[AntiCheat]|r|CFF" << tag_colour <<
+				" Player |r|cff" << plr_colour <<  plr << "|r|cff" << tag_colour <<
+				" has been kicked.|r";
+			sWorld->SendServerMessage(SERVER_MSG_STRING, stream.str().c_str());
+		}
 	}
 	else if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false)) {
 		sLog->outString("AnticheatMgr:: Walk on Water - Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
@@ -97,6 +108,17 @@ void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo  movementInfo)
 			sLog->outString("AnticheatMgr:: Fly-Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
 
 		player->GetSession()->KickPlayer(true);
+		if(sConfigMgr->GetBoolDefault("Anticheat.AnnounceKick", true))
+		{
+			std::string plr = player->GetName();
+			std::string tag_colour = "7bbef7";
+			std::string plr_colour = "ff0000";
+			std::ostringstream stream;
+			stream << "|CFF" << plr_colour << "[AntiCheat]|r|CFF" << tag_colour <<
+				" Player |r|cff" << plr_colour <<  plr << "|r|cff" << tag_colour <<
+				" has been kicked.|r";
+			sWorld->SendServerMessage(SERVER_MSG_STRING, stream.str().c_str());
+		}
 	} else if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false)) {
 		sLog->outString( "AnticheatMgr:: Fly-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
 	}

@@ -4,7 +4,7 @@ This is a port of the PassiveAnticheat Script from lordpsyan's repo to [AzerothC
 
 ## How to install
 
-###1) Simply place the module under the `modules` folder of your AzerothCore source folder.
+### 1) Simply place the module under the `modules` folder of your AzerothCore source folder.
 
 You can do clone it via git under the azerothcore/modules directory:
 
@@ -14,9 +14,9 @@ You can do clone it via git under the azerothcore/modules directory:
 
 or you can manually [download the module](https://github.com/azerothcore/mod-anticheat/archive/master.zip), unzip and place it under the `azerothcore/modules` directory.
 
-###2) Re-run cmake and launch a clean build of AzerothCore
+### 2) Re-run cmake and launch a clean build of AzerothCore
 
-###3) Execute the included "conf/SQL/charactersdb_anticheat.sql" file on your characters database. This creates the necessary tables for this module.
+### 3) Execute the included "conf/SQL/charactersdb_anticheat.sql" file on your characters database. This creates the necessary tables for this module.
 
 **That's it.**
 

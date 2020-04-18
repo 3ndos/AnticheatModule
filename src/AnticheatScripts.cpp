@@ -32,20 +32,20 @@ public:
 		: WorldScript("AnticheatWorldScript")
 	{
 	}
-	void OnUpdate(uint32 diff) override
+	void OnUpdate(uint32 /* diff */) override // unusued parameter
 	{
 		if (sWorld->GetGameTime() > resetTime)
 		{
 			sLog->outString( "Anticheat: Resetting daily report states.");
 			sAnticheatMgr->ResetDailyReportStates();
 			UpdateReportResetTime();
-			sLog->outString( "Anticheat: Next daily report reset: %u", resetTime);
+			sLog->outString( "Anticheat: Next daily report reset: %ld", resetTime);
 		}
 		if (sWorld->GetUptime() > lastIterationPlayer)
 		{
 			lastIterationPlayer = sWorld->GetUptime() + sConfigMgr->GetIntDefault("Anticheat.SaveReportsTime", 60);
 			sLog->outString( "Saving reports for %u players.", sWorld->GetPlayerCount());
-			
+
 			for (SessionMap::const_iterator itr = sWorld->GetAllSessions().begin(); itr != sWorld->GetAllSessions().end(); ++itr)
 				if (Player* plr = itr->second->GetPlayer())
 					sAnticheatMgr->SavePlayerData(plr);
@@ -67,7 +67,7 @@ public:
 		}
 		/* end from skeleton module */
 	}
-	void OnAfterConfigLoad(bool reload) override
+	void OnAfterConfigLoad(bool /* reload */) override // unusued parameter
 	{
 		sLog->outString("AnticheatModule Loaded.");
 	}

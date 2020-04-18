@@ -79,18 +79,17 @@ void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo  movementInfo)
     if (!sConfigMgr->GetBoolDefault("Anticheat.DetectFlyHack", true))
         return;
 
-    uint32 key = player->GetGUIDLow();
     if (player->HasAuraType(SPELL_AURA_FLY) || player->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) || player->HasAuraType(SPELL_AURA_MOD_INCREASE_FLIGHT_SPEED))//overkill but wth
         return;
-	
+
 	/*Thanks to @LilleCarl for info to check extra flag*/
 	bool stricterChecks = true;
 	if (sConfigMgr->GetBoolDefault("Anticheat.StricterFlyHackCheck", false))
 		stricterChecks = !(movementInfo.HasMovementFlag(MOVEMENTFLAG_ASCENDING) && !player->IsInWater());
-	
+
 	if (!movementInfo.HasMovementFlag(MOVEMENTFLAG_CAN_FLY) && !movementInfo.HasMovementFlag(MOVEMENTFLAG_FLYING) && stricterChecks)
 		return;
-	
+
 	if (sConfigMgr->GetBoolDefault("Anticheat.KickPlayerFlyHack", false))
 	{
 		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
@@ -131,7 +130,7 @@ void AnticheatMgr::TeleportPlaneHackDetection(Player* player, MovementInfo movem
 	{
 		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
 			sLog->outString("AnticheatMgr:: Teleport To Plane - Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
-		
+
 		BuildReport(player, TELEPORT_PLANE_HACK_REPORT);
 	}
 }
@@ -194,7 +193,7 @@ void AnticheatMgr::ClimbHackDetection(Player *player, MovementInfo movementInfo,
 	{
 		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
 			sLog->outString("AnticheatMgr:: Climb-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
-		
+
 		BuildReport(player, CLIMB_HACK_REPORT);
 	}
 }

@@ -97,41 +97,41 @@ void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo  movementInfo)
         return;
     }
 
-	/*Thanks to @LilleCarl for info to check extra flag*/
-	bool stricterChecks = true;
-	if (sConfigMgr->GetBoolDefault("Anticheat.StricterFlyHackCheck", false))
+    /*Thanks to @LilleCarl for info to check extra flag*/
+    bool stricterChecks = true;
+    if (sConfigMgr->GetBoolDefault("Anticheat.StricterFlyHackCheck", false))
+    {
+        stricterChecks = !(movementInfo.HasMovementFlag(MOVEMENTFLAG_ASCENDING) && !player->IsInWater());
+    }
+
+    if (!movementInfo.HasMovementFlag(MOVEMENTFLAG_CAN_FLY) && !movementInfo.HasMovementFlag(MOVEMENTFLAG_FLYING) && stricterChecks)
+    {
+        return;
+    }
+
+    if (sConfigMgr->GetBoolDefault("Anticheat.KickPlayerFlyHack", false))
+    {
+        if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
         {
-		stricterChecks = !(movementInfo.HasMovementFlag(MOVEMENTFLAG_ASCENDING) && !player->IsInWater());
+            sLog->outString("AnticheatMgr:: Fly-Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
         }
 
-	if (!movementInfo.HasMovementFlag(MOVEMENTFLAG_CAN_FLY) && !movementInfo.HasMovementFlag(MOVEMENTFLAG_FLYING) && stricterChecks)
+        player->GetSession()->KickPlayer(true);
+        if(sConfigMgr->GetBoolDefault("Anticheat.AnnounceKick", true))
         {
-		return;
+            std::string plr = player->GetName();
+            std::string tag_colour = "7bbef7";
+            std::string plr_colour = "ff0000";
+            std::ostringstream stream;
+            stream << "|CFF" << plr_colour << "[AntiCheat]|r|CFF" << tag_colour <<
+                " Player |r|cff" << plr_colour <<  plr << "|r|cff" << tag_colour <<
+                " has been kicked.|r";
+            sWorld->SendServerMessage(SERVER_MSG_STRING, stream.str().c_str());
         }
-
-	if (sConfigMgr->GetBoolDefault("Anticheat.KickPlayerFlyHack", false))
-	{
-		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
-                {
-			sLog->outString("AnticheatMgr:: Fly-Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
-                }
-
-		player->GetSession()->KickPlayer(true);
-		if(sConfigMgr->GetBoolDefault("Anticheat.AnnounceKick", true))
-		{
-			std::string plr = player->GetName();
-			std::string tag_colour = "7bbef7";
-			std::string plr_colour = "ff0000";
-			std::ostringstream stream;
-			stream << "|CFF" << plr_colour << "[AntiCheat]|r|CFF" << tag_colour <<
-				" Player |r|cff" << plr_colour <<  plr << "|r|cff" << tag_colour <<
-				" has been kicked.|r";
-			sWorld->SendServerMessage(SERVER_MSG_STRING, stream.str().c_str());
-		}
-	} else if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false)) 
-        {
-		sLog->outString( "AnticheatMgr:: Fly-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
-	}
+    } else if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false)) 
+      {
+        sLog->outString( "AnticheatMgr:: Fly-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+      }
 
     BuildReport(player,FLY_HACK_REPORT);
 }

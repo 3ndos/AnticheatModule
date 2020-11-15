@@ -2,6 +2,8 @@
 #include "AnticheatMgr.h"
 #include "Object.h"
 #include "AccountMgr.h"
+#include "Chat.h"
+#include "Player.h"
 
 int64 resetTime = 0;
 int64 lastIterationPlayer = sWorld->GetUptime() + 30;//TODO: change 30 secs static to a configurable option

@@ -88,23 +88,33 @@ void AnticheatMgr::WalkOnWaterHackDetection(Player* player, MovementInfo  moveme
 void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo  movementInfo)
 {
     if (!sConfigMgr->GetBoolDefault("Anticheat.DetectFlyHack", true))
+    {
         return;
+    }
 
     if (player->HasAuraType(SPELL_AURA_FLY) || player->HasAuraType(SPELL_AURA_MOD_INCREASE_MOUNTED_FLIGHT_SPEED) || player->HasAuraType(SPELL_AURA_MOD_INCREASE_FLIGHT_SPEED))//overkill but wth
+    {
         return;
+    }
 
 	/*Thanks to @LilleCarl for info to check extra flag*/
 	bool stricterChecks = true;
 	if (sConfigMgr->GetBoolDefault("Anticheat.StricterFlyHackCheck", false))
+    {
 		stricterChecks = !(movementInfo.HasMovementFlag(MOVEMENTFLAG_ASCENDING) && !player->IsInWater());
+    }
 
 	if (!movementInfo.HasMovementFlag(MOVEMENTFLAG_CAN_FLY) && !movementInfo.HasMovementFlag(MOVEMENTFLAG_FLYING) && stricterChecks)
+    {
 		return;
+    }
 
 	if (sConfigMgr->GetBoolDefault("Anticheat.KickPlayerFlyHack", false))
 	{
 		if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false))
+        {
 			sLog->outString("AnticheatMgr:: Fly-Hack detected and counteracted by kicking player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
+        }
 
 		player->GetSession()->KickPlayer(true);
 		if(sConfigMgr->GetBoolDefault("Anticheat.AnnounceKick", true))
@@ -118,7 +128,8 @@ void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo  movementInfo)
 				" has been kicked.|r";
 			sWorld->SendServerMessage(SERVER_MSG_STRING, stream.str().c_str());
 		}
-	} else if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false)) {
+	} else if (sConfigMgr->GetBoolDefault("Anticheat.WriteLog", false)) 
+    {
 		sLog->outString( "AnticheatMgr:: Fly-Hack detected player %s (%u)", player->GetName().c_str(), player->GetGUIDLow());
 	}
 

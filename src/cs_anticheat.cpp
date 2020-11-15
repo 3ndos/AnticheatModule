@@ -18,6 +18,7 @@
 #include "Chat.h"
 #include "AnticheatMgr.h"
 #include "Configuration/Config.h"
+#include "Player.h"
 
 class anticheat_commandscript : public CommandScript
 {

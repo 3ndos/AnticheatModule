@@ -147,7 +147,7 @@ public:
         strCommand = command;
 
         if (strCommand.compare("deleteall") == 0)
-            sAnticheatMgr->AnticheatDeleteCommand(0);
+            sAnticheatMgr->AnticheatDeleteCommand(ObjectGuid::Empty);
         else
         {
             normalizePlayerName(strCommand);
@@ -155,7 +155,7 @@ public:
             if (!player)
                 handler->PSendSysMessage("Player doesn't exist");
             else
-                sAnticheatMgr->AnticheatDeleteCommand(player->GetGUIDLow());
+                sAnticheatMgr->AnticheatDeleteCommand(player->GetGUID());
         }
 
         return true;
@@ -170,8 +170,8 @@ public:
 
         char* command = strtok((char*)args, " ");
 
-        uint32 guid = 0;
-        Player* player = NULL;
+        ObjectGuid guid;
+        Player* player = nullptr;
 
         if (command)
         {
@@ -181,12 +181,12 @@ public:
             player = ObjectAccessor::FindPlayerByName(strCommand.c_str()); // get player by name
 
             if (player)
-                guid = player->GetGUIDLow();
+                guid = player->GetGUID();
         }else
         {
             player = handler->getSelectedPlayer();
             if (player)
-                guid = player->GetGUIDLow();
+                guid = player->GetGUID();
         }
 
         if (!guid)
@@ -197,12 +197,12 @@ public:
 
         float average = sAnticheatMgr->GetAverage(guid);
         uint32 total_reports = sAnticheatMgr->GetTotalReports(guid);
-        uint32 speed_reports = sAnticheatMgr->GetTypeReports(guid,0);
-        uint32 fly_reports = sAnticheatMgr->GetTypeReports(guid,1);
-        uint32 jump_reports = sAnticheatMgr->GetTypeReports(guid,3);
-        uint32 waterwalk_reports = sAnticheatMgr->GetTypeReports(guid,2);
-        uint32 teleportplane_reports = sAnticheatMgr->GetTypeReports(guid,4);
-        uint32 climb_reports = sAnticheatMgr->GetTypeReports(guid,5);
+        uint32 speed_reports = sAnticheatMgr->GetTypeReports(guid, 0);
+        uint32 fly_reports = sAnticheatMgr->GetTypeReports(guid, 1);
+        uint32 jump_reports = sAnticheatMgr->GetTypeReports(guid, 3);
+        uint32 waterwalk_reports = sAnticheatMgr->GetTypeReports(guid, 2);
+        uint32 teleportplane_reports = sAnticheatMgr->GetTypeReports(guid, 4);
+        uint32 climb_reports = sAnticheatMgr->GetTypeReports(guid, 5);
 
         handler->PSendSysMessage("Information about player %s",player->GetName().c_str());
         handler->PSendSysMessage("Average: %f || Total Reports: %u ",average,total_reports);

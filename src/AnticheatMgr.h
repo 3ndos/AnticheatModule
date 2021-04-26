@@ -22,6 +22,7 @@
 #include "ScriptMgr.h"
 #include "AnticheatData.h"
 #include "Chat.h"
+#include "ObjectGuid.h"
 
 class Player;
 class AnticheatData;
@@ -48,8 +49,8 @@ enum DetectionTypes
     CLIMB_HACK_DETECTION            = 32
 };
 
-// GUIDLow is the key.
-typedef std::map<uint32, AnticheatData> AnticheatPlayersDataMap;
+// GUID is the key.
+typedef std::map<ObjectGuid, AnticheatData> AnticheatPlayersDataMap;
 
 class AnticheatMgr
 {
@@ -73,12 +74,12 @@ class AnticheatMgr
         void HandlePlayerLogin(Player* player);
         void HandlePlayerLogout(Player* player);
 
-        uint32 GetTotalReports(uint32 lowGUID);
-        float GetAverage(uint32 lowGUID);
-        uint32 GetTypeReports(uint32 lowGUID, uint8 type);
+        uint32 GetTotalReports(ObjectGuid guid);
+        float GetAverage(ObjectGuid guid);
+        uint32 GetTypeReports(ObjectGuid guid, uint8 type);
 
         void AnticheatGlobalCommand(ChatHandler* handler);
-        void AnticheatDeleteCommand(uint32 guid);
+        void AnticheatDeleteCommand(ObjectGuid guid);
 
         void ResetDailyReportStates();
     private:
